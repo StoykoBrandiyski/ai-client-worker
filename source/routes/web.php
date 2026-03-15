@@ -2,8 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PromptTemplateController;
 
 // Guest Routes
 
@@ -27,6 +28,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/groups', [GroupController::class, 'store']);
     Route::delete('/groups/{id}', [GroupController::class, 'destroy']);
 
+    Route::get('/prompts/create', [PromptTemplateController::class, 'create']);
+    Route::post('/prompts', [PromptTemplateController::class, 'store']);
+    
     // Dashboard Home
     Route::get('/dashboard', function () {
         return view('welcome'); // Create a simple dashboard blade view
