@@ -4,7 +4,7 @@
 <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
     <h2 class="text-2xl font-bold mb-6 text-gray-800 text-center">Welcome Back</h2>
     
-    <form action="{{ route('/users/authenticate') }}" method="POST" class="space-y-4">
+    <form action="{{ route('authenticate') }}" method="POST" class="space-y-4">
         @csrf {{-- Don't forget this for security! --}}
         
         <div>

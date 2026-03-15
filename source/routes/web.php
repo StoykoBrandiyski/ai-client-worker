@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GroupController;
 
 // Guest Routes
 
@@ -10,7 +11,7 @@ use App\Http\Controllers\DashboardController;
     Route::post('/users', [UserController::class, 'store'])->name('users');
     
     Route::get('/login', [UserController::class, 'login'])->name('login');
-    Route::post('/users/authenticate', [UserController::class, 'authenticate']);
+    Route::post('/users/authenticate', [UserController::class, 'authenticate'])->name('authenticate');
 
 // Authenticated Routes 
 Route::middleware('auth')->group(function () {
@@ -20,6 +21,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/editUser', [UserController::class, 'editPage'])->name('editUser');
     Route::post('/storeEditUser', [UserController::class, 'storeEditUser'])->name('storeEditUser');
+    Route::get('/groups', [GroupController::class, 'getAll']);
+    Route::get('/groups/{id}', [GroupController::class, 'getById'])->where('id', '[0-9]+');
+    Route::get('/storeGroup', [GroupController::class, 'storeGroup']);
+    Route::post('/groups', [GroupController::class, 'store']);
+    Route::delete('/groups/{id}', [GroupController::class, 'destroy']);
 
     // Dashboard Home
     Route::get('/dashboard', function () {
