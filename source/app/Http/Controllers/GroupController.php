@@ -25,6 +25,12 @@ class GroupController extends Controller {
         return view('groups.index', compact('groups'));
     }
 
+    public function getListByGroupId(int $id) {
+        $tasks = $this->taskRepo->getListByGroupId($id);
+        return view('groups.tasks', compact('tasks'));
+    }
+
+
     public function storeGroup(Request $request) {
         $group = $request->id ? $this->groupService->findGroup($request->id) : null;
         return view('groups.storeGroup', compact('group'));
