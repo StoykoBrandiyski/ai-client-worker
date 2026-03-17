@@ -9,11 +9,6 @@ class Task extends Model {
         'prompt_template_id', 'parent_id', 'group_id', 'status', 'executed_count'
     ];
 
-    public function getFillable()
-    {
-        $this->fillable;
-    }
-
     public function group() { return $this->belongsTo(Group::class, 'group_id'); }
     public function images() { return $this->hasMany(TaskImage::class, 'task_id'); }
     public function promptTemplate() { return $this->belongsTo(PromptTemplate::class); }

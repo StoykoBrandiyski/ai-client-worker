@@ -8,7 +8,7 @@ use App\Repositories\Contracts\TaskRepositoryInterface;
 use Illuminate\Http\Request;
 
 class GroupController extends Controller {
-    
+
     private GroupService $groupService;
     private TaskRepositoryInterface $taskRepo;
 
@@ -32,8 +32,9 @@ class GroupController extends Controller {
 
 
     public function storeGroup(Request $request) {
-        $group = $request->id ? $this->groupService->findGroup($request->id) : null;
-        return view('groups.storeGroup', compact('group'));
+        $allGroups = $request->id ? $this->groupService->findGroup($request->id) : [];
+
+        return view('groups.storeGroup', compact('allGroups'));
     }
 
     public function store(StoreGroupRequest $request) {
@@ -44,9 +45,9 @@ class GroupController extends Controller {
 
     public function getById($id) {
         $group = $this->groupService->findGroup($id);
-       
-        $tasks = $this->taskRepo->getListByGroupId($id); 
-        return view('groups.show', compact('group', 'tasks'));
+
+        $tasks = $this->taskRepo->getListByGroupId($id);
+        return view('groups.tasks', compact('group', 'tasks'));
     }
 
     public function destroy($id) {
