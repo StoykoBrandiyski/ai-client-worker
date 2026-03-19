@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EngineController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
@@ -11,19 +12,19 @@ use App\Http\Controllers\PromptTemplateController;
 
     Route::get('/register', [UserController::class, 'create'])->name('register');
     Route::post('/users', [UserController::class, 'store'])->name('users');
-    
+
     Route::get('/login', [UserController::class, 'login'])->name('login');
     Route::post('/users/authenticate', [UserController::class, 'authenticate'])->name('authenticate');
 
-// Authenticated Routes 
+// Authenticated Routes
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [UserController::class, 'logout'])->name('logout');
-    
+
     Route::get('/dashboard', [DashboardController::class, 'show'])->name('show');
 
     Route::get('/editUser', [UserController::class, 'editPage'])->name('editUser');
     Route::post('/storeEditUser', [UserController::class, 'storeEditUser'])->name('storeEditUser');
-    
+
     // Group
     Route::get('/groups', [GroupController::class, 'getAll']);
     Route::get('/groups/{id}', [GroupController::class, 'getById'])->where('id', '[0-9]+');
@@ -41,7 +42,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/tasks/{id}', [TaskController::class, 'editTaskId']);
     Route::get('/tasks/{id}/download', [TaskController::class, 'download']);
     Route::get('/groups/{id}/tasks', [GroupController::class, 'getListByGroupId']);
-    
+
+    // Engine
+    Route::get('/engines', [EngineController::class, 'getAll']);
+    Route::get('/engines/create', [EngineController::class, 'create']); // Form
+    Route::post('/engines', [EngineController::class, 'store']);
+    Route::get('/engines/{id}', [EngineController::class, 'getById']);
+    Route::delete('/engines', [EngineController::class, 'destroy']);
+
     // Dashboard Home
     Route::get('/dashboard', function () {
         return view('welcome'); // Create a simple dashboard blade view
