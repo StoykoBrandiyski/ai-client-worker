@@ -32,7 +32,7 @@ class GroupController extends Controller {
 
 
     public function storeGroup(Request $request) {
-        $allGroups = $request->id ? $this->groupService->findGroup($request->id) : [];
+        $allGroups = $this->groupService->listGroups();
 
         return view('groups.storeGroup', compact('allGroups'));
     }

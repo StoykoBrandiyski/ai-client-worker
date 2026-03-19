@@ -16,8 +16,8 @@ class TaskService {
 
     public function storeTask(array $data, $images = []) {
         // Business Logic: Parent ID management
-        if (isset($data['parent_id'])) {
-            $parent = $this->repository->getById($data['parent_id']);
+        if (isset($data['reply_to_task_id'])) {
+            $parent = $this->repository->getById($data['reply_to_task_id']);
 
             foreach ($parent->only($parent->getFillable()) as $field => $value) {
                 if (in_array($field, ['request_content', 'parent_id'])) {
@@ -25,10 +25,10 @@ class TaskService {
                 }
                 $data[$field] = $value;
             }
-            //var_dump($data);
+            $data['parent_id'] = $parent->parent_id ?? $parent->id;
+            unset($data['reply_to_task_id']);
         }
 
-        //exit();
         $task = $this->repository->save($data);
 
         // Image Upload Logic (Max 3)

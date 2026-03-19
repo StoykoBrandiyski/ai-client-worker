@@ -13,9 +13,11 @@ class TaskRepository implements TaskRepositoryInterface {
 
     public function getListByGroupId(int $id) {
         return Cache::remember("tasks_group_{$id}", 3600, function() use ($id) {
-            return Task::where('group_id', $id)
-                ->select('id', 'name', 'status', 'created_at')
-                ->get();
+            $query = Task::query();
+            $query->where('group_id', '=', $id);
+            $query->where('parent_id', '=',null);
+            $query->select('id', 'name', 'status', 'created_at');
+            return $query->get();
         });
     }
 
@@ -40,7 +42,7 @@ class TaskRepository implements TaskRepositoryInterface {
         if (!empty($filters['status'])) $query->where('status', $filters['status']);
         return $query->paginate(10);
     }
-    
+
     public function getById(int $id)
     {
         $task = Task::find($id);
