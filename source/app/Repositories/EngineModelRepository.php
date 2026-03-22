@@ -6,8 +6,8 @@ use App\Exceptions\NoSuchException;
 use App\Models\EngineModel;
 use App\Repositories\Contracts\EngineModelRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
-use PharIo\Version\NoBuildMetaDataException;
 
 class EngineModelRepository implements EngineModelRepositoryInterface {
 
@@ -25,9 +25,9 @@ class EngineModelRepository implements EngineModelRepositoryInterface {
 
     /**
      * @param int $engineId
-     * @return LengthAwarePaginator
+     * @return Collection
      */
-    public function getAllByEngineId(int $engineId): LengthAwarePaginator {
+    public function getAllByEngineId(int $engineId): Collection {
         return Cache::remember("engine_models_list_{$engineId}", 3600, function() use ($engineId) {
             return EngineModel::where('engine_id', $engineId)->get();
         });

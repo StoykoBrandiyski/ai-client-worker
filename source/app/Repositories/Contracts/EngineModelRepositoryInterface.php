@@ -5,6 +5,7 @@ namespace App\Repositories\Contracts;
 use App\Exceptions\NoSuchException;
 use App\Models\EngineModel;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 
 interface EngineModelRepositoryInterface
 {
@@ -17,9 +18,9 @@ interface EngineModelRepositoryInterface
 
     /**
      * @param int $engineId
-     * @return LengthAwarePaginator
+     * @return Collection
      */
-    public function getAllByEngineId(int $engineId): LengthAwarePaginator;
+    public function getAllByEngineId(int $engineId): Collection;
 
     /**
      * @param string $id
