@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EngineController;
+use App\Http\Controllers\EngineModelController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
@@ -49,6 +50,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/engines', [EngineController::class, 'store']);
     Route::get('/engines/{id}', [EngineController::class, 'getById']);
     Route::delete('/engines', [EngineController::class, 'destroy']);
+
+    // Engine Models
+    // Page Rendering Routes
+    Route::get('/engine/models/create', [EngineModelController::class, 'create']);
+    Route::get('/engine/models/edit/{id}', [EngineModelController::class, 'edit'])->where('id', '[A-Za-z0-9\-_]+');
+
+    Route::get('/engine/models', [EngineModelController::class, 'getList']);
+    Route::post('/engine/models', [EngineModelController::class, 'store']);
+    Route::get('/engine/models/{id}', [EngineModelController::class, 'getById'])->where('id', '[A-Za-z0-9\-_]+');
+    Route::delete('/engine/models', [EngineModelController::class, 'destroy']);
 
     // Dashboard Home
     Route::get('/dashboard', function () {

@@ -2,6 +2,16 @@
 
 namespace App\Providers;
 
+use App\Repositories\Contracts\EngineModelRepositoryInterface;
+use App\Repositories\Contracts\EngineRepositoryInterface;
+use App\Repositories\Contracts\GroupRepositoryInterface;
+use App\Repositories\Contracts\TaskRepositoryInterface;
+use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Repositories\EngineModelRepository;
+use App\Repositories\EngineRepository;
+use App\Repositories\GroupRepository;
+use App\Repositories\TaskRepository;
+use App\Repositories\UserRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,10 +21,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(\App\Repositories\Contracts\UserRepositoryInterface::class, \App\Repositories\UserRepository::class);
-        $this->app->bind(\App\Repositories\Contracts\GroupRepositoryInterface::class, \App\Repositories\GroupRepository::class);
-        $this->app->bind(\App\Repositories\Contracts\TaskRepositoryInterface::class, \App\Repositories\TaskRepository::class);
-        $this->app->bind(\App\Repositories\Contracts\EngineRepositoryInterface::class, \App\Repositories\EngineRepository::class);
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+        $this->app->bind(GroupRepositoryInterface::class, GroupRepository::class);
+        $this->app->bind(TaskRepositoryInterface::class, TaskRepository::class);
+        $this->app->bind(EngineRepositoryInterface::class, EngineRepository::class);
+        $this->app->bind(EngineModelRepositoryInterface::class, EngineModelRepository::class);
     }
 
     /**
