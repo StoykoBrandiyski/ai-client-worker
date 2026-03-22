@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\EngineController;
 use App\Http\Controllers\EngineModelController;
+use App\Http\Controllers\ProcessController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
@@ -60,6 +61,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/engine/models', [EngineModelController::class, 'store']);
     Route::get('/engine/models/{id}', [EngineModelController::class, 'getById'])->where('id', '[A-Za-z0-9\-_]+');
     Route::delete('/engine/models', [EngineModelController::class, 'destroy']);
+
+    // Processes
+    Route::get('/processes', [ProcessController::class, 'getAll']);
+    Route::get('/processes/create', [ProcessController::class, 'create']);
+    Route::get('/processes/edit/{id}', [ProcessController::class, 'edit']);
+    Route::post('/processes', [ProcessController::class, 'store']);
+    Route::get('/processes/{id}', [ProcessController::class, 'getById']);
+    Route::delete('/processes', [ProcessController::class, 'destroy']);
 
     // Dashboard Home
     Route::get('/dashboard', function () {
