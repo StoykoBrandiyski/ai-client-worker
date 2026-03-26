@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Contracts;
 
+use App\Exceptions\NoSuchException;
 use App\Models\Process;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
@@ -27,8 +28,15 @@ interface ProcessRepositoryInterface {
     public function getModelsByProcessId(int $processId): LengthAwarePaginator;
 
     /**
+     * @param array $whereFields
+     * @return Collection
+     */
+    public function getAllByFields(array $whereFields = []): Collection;
+
+    /**
      * @param int $id
      * @return Process
+     * @throws NoSuchException
      */
     public function getById(int $id): Process;
 

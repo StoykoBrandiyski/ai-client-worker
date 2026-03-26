@@ -27,7 +27,9 @@ class ProcessRepository implements ProcessRepositoryInterface {
      * @return Collection
      */
     public function getAll(array $fields = ['*']): Collection {
-        return Process::select($fields)->get();
+        return Cache::remember("processes_list_all", 3600, function() use ($fields) {
+            return Process::select($fields)->get();
+        });
     }
 
     /**
@@ -36,6 +38,23 @@ class ProcessRepository implements ProcessRepositoryInterface {
      */
     public function getModelsByProcessId(int $processId): LengthAwarePaginator {
         return ProcessModel::with('engineModel')->where('process_id', $processId)->orderBy('sort_order')->get();
+    }
+
+    /**
+     * @param array $whereFields
+     * @return Collection
+     */
+    public function getAllByFields(array $whereFields = []): Collection {
+        if (empty($whereFields)) {
+            return Process::all();
+        }
+        $query = Process::query();
+
+        foreach ($whereFields as $key => $value) {
+            $query->where($key, $value);
+        }
+
+        return $query->orderBy('sort_order')->get();
     }
 
     /**
@@ -94,5 +113,6 @@ class ProcessRepository implements ProcessRepositoryInterface {
      */
     private function clearCache(int $id) {
         Cache::forget("process_{$id}");
+        Cache::forget("processes_list_all");
     }
 }

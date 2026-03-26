@@ -2,10 +2,11 @@
 
 namespace App\Services;
 
+use App\Jobs\TaskProcessJob;
 use App\Models\Process;
+use App\Models\ProcessCondition;
 use App\Models\ProcessModel;
 use App\Repositories\Contracts\ProcessRepositoryInterface;
-use App\Models\ProcessCondition;
 use App\Models\Task;
 use App\Exceptions\NoSuchException;
 use App\DTOs\ProcessDTO;
@@ -23,7 +24,7 @@ class ProcessService {
                 $conditionId = $dto->conditionId;
 
                 if (!$conditionId && $dto->newCondition) {
-                    $condition = \App\Models\ProcessCondition::create($dto->newCondition);
+                    $condition = ProcessCondition::create($dto->newCondition);
                     $conditionId = $condition->id;
                 }
 
@@ -89,25 +90,42 @@ class ProcessService {
         }
     }
 
-    /**
-     * Executes process logic based on conditionals (Queue Stub)
-     */
-    public function executeProcessLogic(int $processId) {
-        $process = $this->getProcessById($processId);
-        $condition = $process->condition;
+    public function runScheduledProcess(Process $process)
+    {
+        //1. Get tasks by process conditions
+        //2 . Iteration of tasks
+            //2.1 Update task status to processing
+            //2.2 ProcessTaskJob::dispatch() task
 
-        // Example: Query tasks based on dynamic condition operator
-        $tasksQuery = Task::where($condition->field_key, $condition->operator, $condition->value)
-            ->limit($process->limit_tasks)
-            ->orderBy('id', 'asc'); // Usually priority logic goes here
-
-        $tasks = $tasksQuery->get();
-
-        foreach ($tasks as $task) {
-            // Dispatch Laravel Job to queue
-            // ProcessTaskJob::dispatch($task, $process)->onQueue('high-priority');
+        if (!$process || !$process->is_enabled)
+        {
+            return;
         }
 
-        return $tasks->count();
+        $condition = $process->condition;
+
+        // Dynamic Task Selection based on ProcessCondition
+        $entityTable = 'tasks';
+        if ($condition->entity_type == 'task_group') {
+            $entityTable = 'task_groups';
+        }
+
+        $tasks = DB::table($entityTable)
+            ->where($condition->field_key, $condition->operator, $condition->value)
+            ->where('status', 'pending') // Only pick up new tasks
+            ->limit($process->limit_tasks)
+            ->get();
+
+        foreach ($tasks as $taskData) {
+            // TODO remove this
+            $task = Task::find($taskData->id);
+            $task->update(['status' => 'processing']);
+
+            // Dispatch the job
+            TaskProcessJob::dispatch($task, $process)
+                ->onQueue('process-' . $process->id)
+                //->withChain([]) // Ensure clean chain for failover logic
+                ->delay(now());
+        }
     }
 }

@@ -19,7 +19,7 @@
                         <div class="md:col-span-3">
                             <input type="text" name="identifier" value="{{ old('identifier', $model->identifier ?? '') }}"
                                    {{ isset($model) ? 'readonly' : 'required' }}
-                                   placeholder="e.g., gpt-4-turbo"
+                                   placeholder="The identifier will be append with engine name (e.t 2.5-flash -> gemini-2.5-flash)"
                                    class="w-full border border-gray-300 rounded-lg px-4 py-2 {{ isset($model) ? 'bg-gray-50 text-gray-500' : 'focus:ring-2 focus:ring-blue-500' }} outline-none font-mono">
                             @if(isset($model))
                                 <input type="hidden" name="id" value="{{ $model->identifier }}">
