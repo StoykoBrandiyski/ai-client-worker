@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\TasksProcessJob;
 use App\Repositories\Contracts\EngineModelRepositoryInterface;
 use App\Repositories\EngineModelRepository;
 use App\Services\ProcessService;
@@ -40,7 +41,7 @@ class ProcessController extends Controller {
     public function edit($id) {
         $process = $this->service->getProcessById($id);
         $conditions = ProcessCondition::all();
-        $allModels = $this->engineModelRepository->getAllByEngineId(1);
+        $allModels = $this->engineModelRepository->getAllByEngineId(2);
         // Transform existing models into a JS-friendly format for Alpine
         $selectedModels = $process->models->map(function($pm) {
             return [
@@ -48,6 +49,7 @@ class ProcessController extends Controller {
                 'name' => $pm->engineModel->name ?? $pm->model_id
             ];
         });
+
         return view('processes.form', compact('process', 'conditions', 'allModels','selectedModels'));
     }
 
@@ -67,7 +69,7 @@ class ProcessController extends Controller {
 
         $dto = new ProcessDTO(
             name: $val['name'],
-            status: $val['status'],
+            status: 'new',//$val['status'],
             isEnabled: (int)$val['is_enabled'],
             schedule: $val['schedule'],
             timeout: (int)$val['timeout'],

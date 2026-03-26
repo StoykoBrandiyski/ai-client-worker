@@ -20,7 +20,8 @@ class TaskService {
             $parent = $this->repository->getById($data['reply_to_task_id']);
 
             foreach ($parent->only($parent->getFillable()) as $field => $value) {
-                if (in_array($field, ['request_content', 'parent_id'])) {
+                if (in_array($field, ['request_content','response_content', 'status', 'parent_id'])
+                ) {
                     continue;
                 }
                 $data[$field] = $value;
@@ -34,8 +35,13 @@ class TaskService {
         // Image Upload Logic (Max 3)
         if ($images) {
             foreach (array_slice($images, 0, 3) as $image) {
-                $filename = $task->id . '_' . time() . '.' . $image->extension();
-                $path = $image->storeAs('task-images', $filename, 'public');
+                $imageExtention = 'jpg';
+                if ($image->getClientMimeType() == 'image/png') {
+                    $imageExtention = 'png';
+                }
+
+                $filename = $task->id . '_' . time() . '.' .$imageExtention;
+                $path = $image->storeAs('task-images', $filename, 'private');
                 $task->images()->create(['path' => $path]);
             }
         }

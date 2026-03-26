@@ -31,7 +31,7 @@ class EngineService {
 
             // SHA-256 Hash token if it is provided
             if ($dto->authToken) {
-                $data['auth_token'] = hash('sha256', $dto->authToken);
+                $data['auth_token'] = base64_encode($dto->authToken);
             }
 
             return $this->repository->save($data, $dto->id);

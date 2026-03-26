@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Repositories\Contracts\EngineRepositoryInterface;
+use App\Repositories\EngineModelRepository;
 use Exception;
 use App\Models\EngineModel;
 use App\Repositories\Contracts\EngineModelRepositoryInterface;
@@ -14,7 +16,8 @@ class EngineModelService {
      * @param EngineModelRepositoryInterface $repository
      */
     public function __construct(
-        private EngineModelRepositoryInterface $repository
+        private EngineModelRepositoryInterface $repository,
+        private EngineRepositoryInterface $engineRepository
     ) {}
 
     /**
@@ -25,6 +28,10 @@ class EngineModelService {
      */
     public function saveModel(array $data, ?string $id = null): EngineModel
     {
+        $engine = $this->engineRepository->getById((int) $data['engine_id']);
+
+        $data['identifier'] = trim(strtolower($engine->name)) . '_' . $data['identifier'];
+
         try {
             return $this->repository->save($data, $id);
         } catch (Exception $e) {

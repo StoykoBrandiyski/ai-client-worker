@@ -44,6 +44,7 @@ class TaskController extends Controller {
     public function store(StoreTaskRequest $request) {
         $data = $request->validated();
         $data['user_id'] = Auth::id();
+        $data['status'] = 'pending';
         $this->service->storeTask($data, $request->file('images'));
         return redirect()->back()->with('success', 'Task Updated');
     }
@@ -71,9 +72,14 @@ class TaskController extends Controller {
         try {
             $task = $this->taskRepo->getById($id);
         } catch (NoSuchException $e) {
-
         }
 
-        return view('tasks.detail', compact('task'));
+        $taskStatus = $task->status;
+        if ($task->children) {
+            $lastChild = $task->children->last();
+            $taskStatus = $lastChild->status;
+        }
+
+        return view('tasks.detail', compact('task', 'taskStatus'));
     }
 }

@@ -6,43 +6,47 @@
     <div class="bg-white rounded shadow-sm border p-6">
         <div class="flex justify-between items-center border-b pb-4">
             <h1 class="text-2xl font-bold">{{ $task->name }}</h1>
-            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">Completed</span>
+            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">{{ $taskStatus }}</span>
         </div>
 
         <div class="grid grid-cols-3 gap-4 py-4 text-sm text-gray-500 border-b">
             <div>Created: {{ $task->created_at->diffForHumans() }}</div>
             <div>Last Run: Just now</div>
-            <div>Status: <span class="text-green-600 font-bold">{{ $task->status }}</span></div>
+            <div>Status: <span class="text-green-600 font-bold">{{ $taskStatus}}</span></div>
         </div>
 
-        @forelse($task->children as $child)
+        <div class="mt-6">
+            <h3 class="font-bold mb-2">Prompt</h3>
+            <div class="bg-gray-50 p-4 border rounded text-gray-700">{{ $task->request_content }}</div>
+        </div>
+
+        @if($task->response_content)
+            <div class="mt-6 relative">
+                <h3 class="font-bold mb-2">Result</h3>
+                <div class="absolute right-2 top-8">
+                    <a href="/tasks/{{ $task->id }}/download" title="Download content">💾</a>
+                </div>
+                <pre class="bg-gray-900 text-green-400 p-4 rounded overflow-x-auto"><code>{{ $task->response_content }}</code></pre>
+            </div>
+        @endif
+
+        @foreach($task->children as $child)
 
             <div class="mt-6">
                 <h3 class="font-bold mb-2">Prompt</h3>
                 <div class="bg-gray-50 p-4 border rounded text-gray-700">{{ $child->request_content }}</div>
             </div>
 
-            <div class="mt-6 relative">
-                <h3 class="font-bold mb-2">Result</h3>
-                <div class="absolute right-2 top-8">
-                    <a href="/tasks/{{ $child->id }}/download" title="Download content">💾</a>
-                </div>
-                <pre class="bg-gray-900 text-green-400 p-4 rounded overflow-x-auto"><code>{{ $child->response_content }}</code></pre>
-            </div>
-            @empty
-                <div class="mt-6">
-                    <h3 class="font-bold mb-2">Prompt</h3>
-                    <div class="bg-gray-50 p-4 border rounded text-gray-700">{{ $task->request_content }}</div>
-                </div>
-
+            @if($child->response_content)
                 <div class="mt-6 relative">
                     <h3 class="font-bold mb-2">Result</h3>
                     <div class="absolute right-2 top-8">
-                        <a href="/tasks/{{ $task->id }}/download" title="Download content">💾</a>
+                        <a href="/tasks/{{ $child->id }}/download" title="Download content">💾</a>
                     </div>
-                    <pre class="bg-gray-900 text-green-400 p-4 rounded overflow-x-auto"><code>{{ $task->response_content }}</code></pre>
+                    <pre class="bg-gray-900 text-green-400 p-4 rounded overflow-x-auto"><code>{{ $child->response_content }}</code></pre>
                 </div>
-            @endforelse
+            @endif
+        @endforeach
 
         <form action="/tasks/child" method="POST" enctype="multipart/form-data" class="mt-8">
             @csrf

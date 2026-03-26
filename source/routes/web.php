@@ -59,7 +59,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/engine/models', [EngineModelController::class, 'getList']);
     Route::post('/engine/models', [EngineModelController::class, 'store']);
-    Route::get('/engine/models/{id}', [EngineModelController::class, 'getById'])->where('id', '[A-Za-z0-9\-_]+');
+    Route::get('/engine/models/{id}', [EngineModelController::class, 'getById']);
     Route::delete('/engine/models', [EngineModelController::class, 'destroy']);
 
     // Processes

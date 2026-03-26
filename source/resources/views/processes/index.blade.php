@@ -25,6 +25,7 @@
                     <th class="p-4">Status</th>
                     <th class="p-4">Schedule</th>
                     <th class="p-4">Enabled</th>
+                    <th class="p-4">Next Schedule</th>
                     <th class="p-4 text-right">Actions</th>
                 </tr>
                 </thead>
@@ -38,6 +39,11 @@
                             <span class="px-2 py-1 rounded text-xs text-white {{ $process->is_enabled ? 'bg-green-500' : 'bg-red-500' }}">
                                 {{ $process->is_enabled ? 'Yes' : 'No' }}
                             </span>
+                        </td>
+                        <td class="p-4">
+                            <div class="text-[10px] text-blue-500 uppercase font-bold">
+                                Next: {{ \Cron\CronExpression::factory((string) $process->schedule)->getNextRunDate()->format('Y-m-d H:i') }}
+                            </div>
                         </td>
                         <td class="p-4 text-right flex justify-end gap-2">
                             <a href="/processes/{{ $process->id }}" class="text-blue-600">View</a>
