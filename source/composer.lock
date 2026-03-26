@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "53b5d56b3b7e3cbac1713e68c8850f6c",
+    "content-hash": "b941534dec3ca7f6ddfc511901b80455",
     "packages": [
         {
             "name": "brick/math",
@@ -1052,6 +1052,68 @@
                 }
             ],
             "time": "2025-08-22T14:27:06+00:00"
+        },
+        {
+            "name": "hosseinhezami/laravel-gemini",
+            "version": "1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hosseinhezami/laravel-gemini.git",
+                "reference": "4ab7bae02f0cc88f3e93455e8363d9a517c6eafe"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hosseinhezami/laravel-gemini/zipball/4ab7bae02f0cc88f3e93455e8363d9a517c6eafe",
+                "reference": "4ab7bae02f0cc88f3e93455e8363d9a517c6eafe",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/http": "^10.0|^11.0|^12.0",
+                "illuminate/support": "^10.0|^11.0|^12.0",
+                "php": "^8.2|^8.3|^8.4|^8.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Gemini": "HosseinHezami\\LaravelGemini\\Facades\\Gemini"
+                    },
+                    "providers": [
+                        "HosseinHezami\\LaravelGemini\\GeminiServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/Helpers/helpers.php"
+                ],
+                "psr-4": {
+                    "HosseinHezami\\LaravelGemini\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Hossein Hezami",
+                    "email": "hossein.hezami@gmail.com"
+                }
+            ],
+            "description": "A production-ready Laravel package to integrate with the Google Gemini API. Supports text, image, video, audio, long-context, structured output, files, caching, function-calling and understanding capabilities.",
+            "keywords": [
+                "Gemini",
+                "ai",
+                "api",
+                "google",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/hosseinhezami/laravel-gemini/issues",
+                "source": "https://github.com/hosseinhezami/laravel-gemini/tree/v1.0.4"
+            },
+            "time": "2025-12-21T12:53:33+00:00"
         },
         {
             "name": "laravel/framework",
