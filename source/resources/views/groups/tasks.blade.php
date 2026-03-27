@@ -3,13 +3,20 @@
 @section('content')
 <div class="min-h-screen bg-gray-100 py-8">
     <div class="max-w-6xl mx-auto px-4">
-        
+
         <div class="flex items-center justify-between mb-6">
             <a href="/groups" class="text-blue-600 hover:underline flex items-center gap-1">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
                 Back to Groups
+            </a>
+            <a href="{{ route('tasks.create') }}"
+               class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-bold shadow-sm transition flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                </svg>
+                New Task
             </a>
         </div>
 
@@ -32,10 +39,10 @@
                             <td class="px-6 py-4">
                                 @php
                                     $statusClasses = [
-                                        'Completed' => 'bg-green-600 text-white',
-                                        'In Progress' => 'bg-orange-500 text-white',
-                                        'Pending' => 'bg-gray-400 text-white',
-                                        'Failed' => 'bg-red-500 text-white',
+                                        'completed' => 'bg-green-600 text-white',
+                                        'progress' => 'bg-orange-500 text-white',
+                                        'pending' => 'bg-gray-400 text-white',
+                                        'failed' => 'bg-red-500 text-white',
                                     ];
                                     $badgeClass = $statusClasses[$task->status] ?? 'bg-gray-200 text-gray-700';
                                 @endphp
@@ -48,16 +55,16 @@
                             </td>
                             <td class="px-6 py-4 text-right">
                                 <div class="flex justify-end gap-2">
-                                    <a href="/tasks/{{ $task->id }}" 
+                                    <a href="/tasks/{{ $task->id }}"
                                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded text-sm font-medium transition">
                                         View
                                     </a>
-                                    
-                                    <form action="/tasks/{{ $task->id }}" method="POST" 
+
+                                    <form action="/tasks/{{ $task->id }}" method="POST"
                                           onsubmit="return confirm('Move this task to the recycle bin?')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" 
+                                        <button type="submit"
                                                 class="bg-red-500 hover:bg-red-600 text-white p-1.5 rounded transition shadow-sm"
                                                 title="Delete task">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

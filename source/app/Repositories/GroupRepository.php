@@ -11,6 +11,7 @@ class GroupRepository implements GroupRepositoryInterface {
             return Group::select('id', 'name')
                 ->withCount('tasks')
                 ->with(['latestThreeTasks' => function($q) {
+                    $q->where('parent_id', '=', null);
                     $q->select('id', 'name', 'status', 'group_id');
                 }])->get();
         });

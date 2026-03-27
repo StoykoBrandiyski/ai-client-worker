@@ -19,4 +19,8 @@ class PromptTemplateRepository {
     public function getAllGroups() {
         return TemplateGroup::all();
     }
+
+    public function getAll() {
+        return PromptTemplate::all(['id', 'name']);
+    }
 }

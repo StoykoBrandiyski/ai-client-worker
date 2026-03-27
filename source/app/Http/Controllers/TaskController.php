@@ -52,7 +52,7 @@ class TaskController extends Controller {
     public function storeChild(StoreChildRequest $request) {
         $data = $request->validated();
         $data['user_id'] = Auth::id();
-
+        $data['status'] = 'pending';
         $this->service->storeTask($data, $request->file('images'));
         return redirect()->back()->with('success', 'Task Updated');
     }
@@ -64,7 +64,7 @@ class TaskController extends Controller {
 
     public function createTasks() {
         $groups = $this->groupService->listGroups();
-        $templates = $this->promptTemplateRepository->getAllGroups();
+        $templates = $this->promptTemplateRepository->getAll();
         return view('tasks.create', compact(['groups', 'templates']));
     }
 

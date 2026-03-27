@@ -3,7 +3,7 @@
 @section('content')
 <div class="min-h-screen bg-gray-100 py-10">
     <div class="max-w-4xl mx-auto px-4">
-        
+
         <div class="flex items-center justify-between mb-8">
             <h1 class="text-3xl font-bold text-gray-800">Create New Task</h1>
             <a href="/dashboard" class="text-blue-600 hover:text-blue-800 flex items-center gap-2">
@@ -25,7 +25,7 @@
                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
                     </div>
                 </div>
-                
+
                 <div class="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
                     <label for="executed_count" class="font-semibold text-gray-700">Execute Count</label>
                     <div class="md:col-span-3">
@@ -68,7 +68,7 @@
                         <select id="template_select" name="prompt_template_id" class="w-full border border-blue-200 bg-blue-50 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500">
                             <option value="">-- Choose a Prompt Template (Optional) --</option>
                             @foreach($templates as $template)
-                                <option value="{{ $template->id }}" data-content="{{ $template->content }}">
+                                <option value="{{ $template->id }}">
                                     {{ $template->name }}
                                 </option>
                             @endforeach
@@ -109,22 +109,40 @@
         const contentTextarea = document.getElementById('request_content');
 
         templateSelect.addEventListener('change', function() {
-            // Find the selected option
-            const selectedOption = this.options[this.selectedIndex];
-            
-            // Get the content from the data attribute
-            const content = selectedOption.getAttribute('data-content');
-
-            if (content) {
-                // Smooth transition of content
-                contentTextarea.value = content;
-                
-                // Visual feedback
-                contentTextarea.classList.add('ring-2', 'ring-blue-400');
-                setTimeout(() => {
-                    contentTextarea.classList.remove('ring-2', 'ring-blue-400');
-                }, 1000);
+            const templateId = this.value;
+            if (!templateId) {
+                return;
             }
+
+            // Optional: Add a loading state
+            contentTextarea.placeholder = "Loading template...";
+            contentTextarea.disabled = true;
+
+            // Send GET request to your new route
+            fetch(`/templates/${templateId}`)
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    // Load the content into the textarea
+                    contentTextarea.value = data.content;
+
+                    // Visual feedback (keep your existing ring logic)
+                    contentTextarea.classList.add('ring-2', 'ring-blue-400');
+                    setTimeout(() => {
+                        contentTextarea.classList.remove('ring-2', 'ring-blue-400');
+                    }, 1000);
+                })
+                .catch(error => {
+                    console.error('Error fetching template:', error);
+                    alert('Failed to load template. Please try again.');
+                })
+                .finally(() => {
+                    // Reset states
+                    contentTextarea.placeholder = "Describe your request in detail...";
+                    contentTextarea.disabled = false;
+                });
         });
 
         // Validation for Max 3 Images

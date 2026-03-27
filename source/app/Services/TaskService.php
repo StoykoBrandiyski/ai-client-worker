@@ -41,7 +41,7 @@ class TaskService {
                 }
 
                 $filename = $task->id . '_' . time() . '.' .$imageExtention;
-                $path = $image->storeAs('task-images', $filename, 'private');
+                $path = $image->storeAs('task-images', $filename, 'public');
                 $task->images()->create(['path' => $path]);
             }
         }

@@ -23,7 +23,7 @@
             </div>
             <button class="text-gray-400">▼</button>
         </div>
-        
+
         <div class="p-2">
             @foreach($group->latestThreeTasks as $task)
             <div class="flex justify-between items-center p-3 border-b last:border-0 hover:bg-gray-50">
@@ -32,8 +32,8 @@
                     <span class="text-gray-700">{{ $task->name }}</span>
                 </div>
                 <div class="flex items-center space-x-3">
-                    <span class="px-3 py-1 rounded text-xs text-white 
-                        {{ $task->status == 'Completed' ? 'bg-green-600' : ($task->status == 'Pending' ? 'bg-gray-400' : 'bg-red-500') }}">
+                    <span class="px-3 py-1 rounded text-xs text-white
+                        {{ $task->getStatusColorAttribute() }}">
                         {{ $task->status }}
                     </span>
                     <a href="/tasks/{{ $task->id }}" class="bg-blue-600 text-white px-3 py-1 rounded text-sm">View Details</a>

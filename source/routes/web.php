@@ -37,8 +37,23 @@ Route::middleware('auth')->group(function () {
     Route::get('/prompts/create', [PromptTemplateController::class, 'create']);
     Route::post('/prompts', [PromptTemplateController::class, 'store']);
 
+    Route::get('/templates/{template}', function (\App\Models\PromptTemplate $template) {
+        return response()->json([
+            'content' => $template->content
+        ]);
+    });
+
+    Route::get('/task-images/{filename}', function ($filename) {
+
+        if (!Storage::disk('public')->exists('task-images/' . $filename)) {
+            abort(404);
+        }
+
+        return Storage::disk('public')->response('task-images/' . $filename);
+    })->name('image.show');
+
     Route::get('/tasks', [TaskController::class, 'getList']);
-    Route::get('/tasks/create', [TaskController::class, 'createTasks']);
+    Route::get('/tasks/create', [TaskController::class, 'createTasks'])->name('tasks.create');
     Route::post('/tasks', [TaskController::class, 'store']);
     Route::post('/tasks/child', [TaskController::class, 'storeChild']);
     Route::get('/tasks/{id}', [TaskController::class, 'editTaskId']);
@@ -55,7 +70,7 @@ Route::middleware('auth')->group(function () {
     // Engine Models
     // Page Rendering Routes
     Route::get('/engine/models/create', [EngineModelController::class, 'create']);
-    Route::get('/engine/models/edit/{id}', [EngineModelController::class, 'edit'])->where('id', '[A-Za-z0-9\-_]+');
+    Route::get('/engine/models/edit/{id}', [EngineModelController::class, 'edit']);
 
     Route::get('/engine/models', [EngineModelController::class, 'getList']);
     Route::post('/engine/models', [EngineModelController::class, 'store']);
