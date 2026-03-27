@@ -57,6 +57,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/tasks', [TaskController::class, 'store']);
     Route::post('/tasks/child', [TaskController::class, 'storeChild']);
     Route::get('/tasks/{id}', [TaskController::class, 'editTaskId']);
+    Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
     Route::get('/tasks/{id}/download', [TaskController::class, 'download']);
     Route::get('/groups/{id}/tasks', [GroupController::class, 'getListByGroupId']);
 

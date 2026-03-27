@@ -82,4 +82,21 @@ class TaskController extends Controller {
 
         return view('tasks.detail', compact('task', 'taskStatus'));
     }
+
+    public function destroy(\App\Models\Task $task)
+    {
+        $groupId = $task->group_id;
+        $parentId = $task->parent_id;
+
+        // This will also delete children if you have 'onDelete(cascade)' in your migration
+        $this->taskRepo->delete($task);
+
+        if ($parentId) {
+            // It was a reply, stay on the current task detail page
+            return back()->with('success', 'Reply deleted successfully.');
+        }
+
+        // It was the main task, go back to the group list
+        return redirect("/groups/{$groupId}")->with('success', 'Task deleted successfully.');
+    }
 }

@@ -27,7 +27,15 @@ class TaskRepository implements TaskRepositoryInterface {
         return $task;
     }
 
-    public function delete(int $id) {
+    public function delete(Task $task)
+    {
+        $groupId = $task->group_id;
+        $task->delete();
+        $this->clearCache($groupId);
+    }
+
+    public function deleteById(int $id)
+    {
         $task = Task::find($id);
         if ($task) {
             $groupId = $task->group_id;

@@ -37,6 +37,10 @@
                     <div class="flex justify-between items-center mb-2">
                         <h3 class="font-bold">Result</h3>
                         <div class="flex items-center gap-3">
+                            <button onclick="copyToClipboard('result-{{ $task->id }}', this)"
+                                    class="text-xs bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded transition">
+                                Copy
+                            </button>
                             <button onclick="toggleResult('result-{{ $task->id }}', this)" class="text-xs text-blue-600 hover:text-blue-800 font-medium">
                                 Hide Result
                             </button>
@@ -52,6 +56,14 @@
             @foreach($task->children as $child)
                 <div class="mt-10 pt-6 border-t border-dashed">
                     <h3 class="font-bold mb-2 text-gray-800">Reply Prompt</h3>
+                    <form action="{{ route('tasks.destroy', $child->id) }}" method="POST"
+                          onsubmit="return confirm('Delete this specific reply?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="text-xs text-red-400 hover:text-red-600 transition">
+                            Delete Reply
+                        </button>
+                    </form>
                     <div class="bg-blue-50 p-4 border border-blue-100 rounded text-gray-700 whitespace-pre-wrap">{{ $child->request_content }}</div>
 
                     @if($child->images->count() > 0)
@@ -66,6 +78,10 @@
                         <div class="mt-6 relative">
                             <div class="flex justify-between items-center mb-2">
                                 <h3 class="font-bold">Result</h3>
+                                <button onclick="copyToClipboard('result-{{ $task->id }}', this)"
+                                        class="text-xs bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded transition">
+                                    Copy
+                                </button>
                                 <button onclick="toggleResult('result-{{ $child->id }}', this)" class="text-xs text-blue-600 font-medium">Hide Result</button>
                             </div>
                             <div id="result-{{ $child->id }}">
@@ -100,6 +116,54 @@
                 target.classList.add('hidden');
                 btn.innerText = 'Show Result';
             }
+        }
+        function copyToClipboard(elementId, btn) {
+            const text = document.getElementById(elementId).innerText;
+
+            // 1. Try the modern Clipboard API first
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text)
+                    .then(() => showSuccess(btn))
+                    .catch(err => console.error('Clipboard API failed', err));
+            } else {
+                // 2. Fallback: The "Hidden Textarea" Method
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+
+                // Ensure the textarea isn't visible
+                textArea.style.position = "fixed";
+                textArea.style.left = "-9999px";
+                textArea.style.top = "0";
+                document.body.appendChild(textArea);
+
+                textArea.focus();
+                textArea.select();
+
+                try {
+                    const successful = document.execCommand('copy');
+                    if (successful) {
+                        showSuccess(btn);
+                    }
+                } catch (err) {
+                    console.error('Fallback copy failed', err);
+                }
+
+                document.body.removeChild(textArea);
+            }
+        }
+
+        // Separate function for the button visual feedback
+        function showSuccess(btn) {
+            const originalText = btn.innerText;
+            btn.innerText = 'Copied!';
+            btn.classList.replace('bg-gray-200', 'bg-green-500');
+            btn.classList.add('text-white');
+
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.classList.replace('bg-green-500', 'bg-gray-200');
+                btn.classList.remove('text-white');
+            }, 2000);
         }
     </script>
 @endsection
