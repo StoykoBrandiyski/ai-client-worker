@@ -4,6 +4,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Task extends Model {
     protected $fillable = [
@@ -23,6 +24,15 @@ class Task extends Model {
     public function children(): HasMany {
         return $this->hasMany(self::class, 'parent_id');
     }
+
+    /**
+     * @return HasOne
+     */
+    public function latestChild(): HasOne
+    {
+        return $this->hasOne(Task::class, 'parent_id')->latestOfMany();
+    }
+
 
     public function getStatusColorAttribute(): string
     {

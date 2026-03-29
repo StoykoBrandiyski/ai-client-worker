@@ -21,6 +21,24 @@ class TaskRepository implements TaskRepositoryInterface {
         });
     }
 
+    public function getListByGroupIdWithLatestChildStatus(int $groupId)
+    {
+        return Task::whereNull('tasks.parent_id')
+            ->where('group_id', $groupId)
+            ->with('latestChild:id,tasks.parent_id,status')
+            ->get()
+            ->map(function ($parent) {
+                return [
+                    'id'     => $parent->id,
+                    'name'   => $parent->name,
+                    // Fallback to parent status if no child exists
+                    'status' => $parent->latestChild?->status ?? $parent->status,
+                    'created_at' => $parent->created_at->toDateTimeString(),
+                ];
+            });
+    }
+
+
     public function save(array $data, $id = null) {
         $task = Task::updateOrCreate(['id' => $id], $data);
         $this->clearCache($task->group_id);

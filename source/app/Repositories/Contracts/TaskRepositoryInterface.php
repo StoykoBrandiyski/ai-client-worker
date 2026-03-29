@@ -11,5 +11,6 @@ interface TaskRepositoryInterface {
     public function deleteById(int $id);
     public function search(array $filters);
     public function getListByGroupId(int $id);
+    public function getListByGroupIdWithLatestChildStatus(int $groupId);
 
 }

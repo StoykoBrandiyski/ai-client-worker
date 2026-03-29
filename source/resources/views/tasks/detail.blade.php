@@ -1,20 +1,28 @@
 @extends('layouts.app')
 @section('content')
     <div class="max-w-5xl mx-auto p-6 bg-gray-50">
+        @php
+            $statusClasses = [
+                'completed' => 'bg-green-600 text-white',
+                'progress' => 'bg-orange-500 text-white',
+                'pending' => 'bg-gray-400 text-white',
+                'failed' => 'bg-red-500 text-white',
+            ];
+            $badgeClass = $statusClasses[$taskStatus] ?? 'bg-gray-200 text-gray-700';
+        @endphp
         <a href="/groups/{{ $task->group_id }}" class="text-blue-500 mb-4 inline-block hover:underline">← Back to Group Tasks</a>
-
         <div class="bg-white rounded-lg shadow-sm border p-6">
             <div class="flex justify-between items-center border-b pb-4">
                 <h1 class="text-2xl font-bold">{{ $task->name }}</h1>
-                <span class="px-3 py-1 rounded-full text-sm font-semibold border {{ $task->status_color }}">
-                {{ ucfirst($task->status) }}
-            </span>
+                <span class="px-3 py-1 rounded-full text-sm font-semibold border {{ $badgeClass }}">
+                                    {{ $taskStatus }}
+                </span>
             </div>
 
             <div class="grid grid-cols-3 gap-4 py-4 text-sm text-gray-500 border-b">
                 <div>Created: {{ $task->created_at->diffForHumans() }}</div>
                 <div>Group: {{ $task->group?->name ?? 'N/A' }}</div>
-                <div>Status: <span class="font-bold {{ $task->status === 'error' ? 'text-red-600' : 'text-green-600' }}">{{ strtoupper($task->status) }}</span></div>
+                <div>Status: <span class="font-bold  {{ $badgeClass }}">{{ strtoupper($taskStatus) }}</span></div>
             </div>
 
             <div class="mt-6">

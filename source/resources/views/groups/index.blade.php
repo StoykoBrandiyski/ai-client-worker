@@ -32,10 +32,6 @@
                     <span class="text-gray-700">{{ $task->name }}</span>
                 </div>
                 <div class="flex items-center space-x-3">
-                    <span class="px-3 py-1 rounded text-xs text-white
-                        {{ $task->getStatusColorAttribute() }}">
-                        {{ $task->status }}
-                    </span>
                     <a href="/tasks/{{ $task->id }}" class="bg-blue-600 text-white px-3 py-1 rounded text-sm">View Details</a>
                     <form action="/tasks/{{ $task->id }}" method="POST" onsubmit="return confirm('Delete?')">
                         @csrf @method('DELETE')

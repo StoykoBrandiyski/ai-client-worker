@@ -118,7 +118,7 @@ class TaskController extends Controller {
         }
 
         $taskStatus = $task->status;
-        if ($task->children) {
+        if ($task->children->isNotEmpty()) {
             $lastChild = $task->children->last();
             $taskStatus = $lastChild->status;
         }

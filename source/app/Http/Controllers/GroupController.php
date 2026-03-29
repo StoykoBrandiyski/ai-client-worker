@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Exceptions\NoSuchException;
 use App\Services\GroupService;
 use App\Http\Requests\StoreGroupRequest;
 use App\DTOs\GroupDTO;
@@ -44,9 +45,13 @@ class GroupController extends Controller {
     }
 
     public function getById($id) {
-        $group = $this->groupService->findGroup($id);
+        try {
+            $group = $this->groupService->findGroup($id);
+        } catch (NoSuchException $e) {
+            return back()->with('error', $e->getMessage());
+        }
 
-        $tasks = $this->taskRepo->getListByGroupId($id);
+        $tasks = $this->taskRepo->getListByGroupIdWithLatestChildStatus($id);
         return view('groups.tasks', compact('group', 'tasks'));
     }
 

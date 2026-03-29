@@ -34,7 +34,7 @@
                     @forelse($tasks as $task)
                         <tr class="hover:bg-gray-50 transition-colors">
                             <td class="px-6 py-4 text-gray-800 font-medium">
-                                {{ $task->name }}
+                                {{ $task['name'] }}
                             </td>
                             <td class="px-6 py-4">
                                 @php
@@ -44,23 +44,23 @@
                                         'pending' => 'bg-gray-400 text-white',
                                         'failed' => 'bg-red-500 text-white',
                                     ];
-                                    $badgeClass = $statusClasses[$task->status] ?? 'bg-gray-200 text-gray-700';
+                                    $badgeClass = $statusClasses[$task['status']] ?? 'bg-gray-200 text-gray-700';
                                 @endphp
                                 <span class="px-3 py-1 rounded text-xs font-bold {{ $badgeClass }}">
-                                    {{ $task->status }}
+                                    {{ $task['status'] }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-500">
-                                {{ $task->created_at->diffForHumans() }}
+                                {{ $task['created_at'] }}
                             </td>
                             <td class="px-6 py-4 text-right">
                                 <div class="flex justify-end gap-2">
-                                    <a href="/tasks/{{ $task->id }}"
+                                    <a href="/tasks/{{ $task['id'] }}"
                                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded text-sm font-medium transition">
                                         View
                                     </a>
 
-                                    <form action="/tasks/{{ $task->id }}" method="POST"
+                                    <form action="/tasks/{{ $task['id'] }}" method="POST"
                                           onsubmit="return confirm('Move this task to the recycle bin?')">
                                         @csrf
                                         @method('DELETE')
