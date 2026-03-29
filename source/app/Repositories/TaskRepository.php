@@ -51,6 +51,11 @@ class TaskRepository implements TaskRepositoryInterface {
         return $query->paginate(10);
     }
 
+    /**
+     * @param int $id
+     * @return mixed
+     * @throws NoSuchException
+     */
     public function getById(int $id)
     {
         $task = Task::find($id);

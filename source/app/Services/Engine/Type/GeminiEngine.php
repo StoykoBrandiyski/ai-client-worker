@@ -7,6 +7,7 @@ use Exception;
 use HosseinHezami\LaravelGemini\Facades\Gemini;
 use App\Models\Task;
 use App\Services\Engine\EngineProviderInterface;
+use Illuminate\Support\Facades\Storage;
 use OutOfRangeException;
 
 class GeminiEngine implements EngineProviderInterface
@@ -64,16 +65,26 @@ class GeminiEngine implements EngineProviderInterface
         }
 
         //return [ 'content' => 'Test'];
-        $response = Gemini::setApiKey(base64_decode($engine->auth_token))
+        $geminiRequest = Gemini::setApiKey(base64_decode($engine->auth_token))
             ->text()
             ->model($engineModel->identifier)
-                //TODO Change to be dynamic
-            //->model('gemini-2.5-flash')
             ->system($engineModel->initial_prompt)
             ->prompt($task->request_content)
             ->history($historyFormat)
             ->temperature( 0.7)
-            ->maxTokens(4096)
+            ->maxTokens(4096);
+
+        foreach ($task->images as $image) {
+            if (Storage::disk('public')->exists($image->path)) {
+                $geminiRequest->file(
+                    Storage::disk('public')->mimeType($image->path),
+                    Storage::disk('public')->get($image->path)
+                );
+            }
+        }
+
+        $response = $geminiRequest
+            ->prompt($task->request_content)
             ->generate();
 
         return [

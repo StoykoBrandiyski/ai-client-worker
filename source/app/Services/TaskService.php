@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Repositories\Contracts\TaskRepositoryInterface;
 use App\Exceptions\NoSuchException;
 use Illuminate\Support\Facades\Storage;
+use InvalidArgumentException;
 
 class TaskService {
     private TaskRepositoryInterface $repository;
@@ -18,6 +19,12 @@ class TaskService {
         // Business Logic: Parent ID management
         if (isset($data['reply_to_task_id'])) {
             $parent = $this->repository->getById($data['reply_to_task_id']);
+
+            foreach ($parent->children as $child) {
+                if ($child->response_content == null) {
+                    throw new InvalidArgumentException("There is a not completed task");
+                }
+            }
 
             foreach ($parent->only($parent->getFillable()) as $field => $value) {
                 if (in_array($field, ['request_content','response_content', 'status', 'parent_id'])
