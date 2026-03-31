@@ -23,6 +23,11 @@ interface EngineModelRepositoryInterface
     public function getAllByEngineId(int $engineId): Collection;
 
     /**
+     * @return Collection
+     */
+    public function getAll(): Collection;
+
+    /**
      * @param string $id
      * @return EngineModel
      * @throws NoSuchException

@@ -89,4 +89,12 @@ class EngineModelRepository implements EngineModelRepositoryInterface {
     private function clearCache(int $engineId) {
         Cache::forget("engine_models_list_{$engineId}");
     }
+
+    /**
+     * @return Collection
+     */
+    public function getAll(): Collection
+    {
+        return EngineModel::all(['identifier', 'name']);
+    }
 }

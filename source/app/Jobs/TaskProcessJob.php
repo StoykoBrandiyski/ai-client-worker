@@ -15,6 +15,8 @@ class TaskProcessJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $timeout = 1800; // 10 minutes
+
     /**
      * @param Task $task
      * @param Process $process
@@ -28,6 +30,7 @@ class TaskProcessJob implements ShouldQueue
 
     public function handle(TaskExecution $service)
     {
+        $this->timeout = $this->process->timeout;
         $service->runTaskInProcess(
             $this->task,
             $this->process

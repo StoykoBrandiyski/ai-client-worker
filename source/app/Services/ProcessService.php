@@ -12,6 +12,7 @@ use App\Exceptions\NoSuchException;
 use App\DTOs\ProcessDTO;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ProcessService {
     public function __construct(protected ProcessRepositoryInterface $repository) {}
@@ -96,12 +97,12 @@ class ProcessService {
         //2 . Iteration of tasks
             //2.1 Update task status to processing
             //2.2 ProcessTaskJob::dispatch() task
-
         if (!$process || !$process->is_enabled)
         {
             return;
         }
 
+        Log::info('The process: '. $process->name . ' is running');
         $condition = $process->condition;
 
         // Dynamic Task Selection based on ProcessCondition

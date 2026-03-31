@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services\JobProcess;
-
 
 use App\Repositories\Contracts\ProcessRepositoryInterface;
 use App\Services\ProcessService;
@@ -10,10 +8,17 @@ use Illuminate\Console\Scheduling\Schedule;
 
 class KernalProcess
 {
+    /**
+     * KernalProcess constructor.
+     * @param ProcessRepositoryInterface $processRepository
+     */
     public function __construct(
-        private ProcessRepositoryInterface $processRepository)
-    {}
+        private ProcessRepositoryInterface $processRepository
+    ) {}
 
+    /**
+     * @param Schedule $schedule
+     */
     public function execute(Schedule $schedule)
     {
         // Retrieve all enabled processes from the database\

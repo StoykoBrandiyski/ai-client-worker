@@ -65,7 +65,7 @@ class TaskController extends Controller {
         $data['user_id'] = Auth::id();
         $data['status'] = 'pending';
         $this->service->storeTask($data, $request->file('images'));
-        return redirect()->back()->with('success', 'Task Updated');
+        return redirect()->route('groups')->with('success', 'Task Updated');
     }
 
     /**

@@ -54,7 +54,7 @@ class ProcessRepository implements ProcessRepositoryInterface {
             $query->where($key, $value);
         }
 
-        return $query->orderBy('sort_order')->get();
+        return $query->get();
     }
 
     /**

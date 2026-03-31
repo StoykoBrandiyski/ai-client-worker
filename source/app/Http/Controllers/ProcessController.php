@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\TasksProcessJob;
+use App\Exceptions\NoSuchException;
 use App\Repositories\Contracts\EngineModelRepositoryInterface;
-use App\Repositories\EngineModelRepository;
 use App\Services\ProcessService;
 use App\Repositories\Contracts\ProcessRepositoryInterface;
 use App\Models\ProcessCondition;
@@ -39,9 +38,13 @@ class ProcessController extends Controller {
     }
 
     public function edit($id) {
-        $process = $this->service->getProcessById($id);
+        try {
+            $process = $this->service->getProcessById($id);
+        } catch (NoSuchException $e) {
+            return view('processes.index')->with('error', $e->getMessage());
+        }
         $conditions = ProcessCondition::all();
-        $allModels = $this->engineModelRepository->getAllByEngineId(2);
+        $allModels = $this->engineModelRepository->getAll();
         // Transform existing models into a JS-friendly format for Alpine
         $selectedModels = $process->models->map(function($pm) {
             return [
@@ -79,17 +82,29 @@ class ProcessController extends Controller {
             id: $request->input('id')
         );
 
-        $this->service->saveProcess($dto, $val['models']);
+        try {
+            $this->service->saveProcess($dto, $val['models']);
+        } catch (NoSuchException $e) {
+            return redirect('/processes')->with('error', $e->getMessage());
+        }
         return redirect('/processes')->with('success', 'Process saved successfully.');
     }
 
     public function getById($id) {
-        $process = $this->service->getProcessById($id);
+        try {
+            $process = $this->service->getProcessById($id);
+        } catch (NoSuchException $e) {
+            return redirect('/processes')->with('error', $e->getMessage());
+        }
         return view('processes.show', compact('process'));
     }
 
     public function destroy(Request $request) {
-        $this->service->deleteProcess($request->input('id'));
+        try {
+            $this->service->deleteProcess($request->input('id'));
+        } catch (NoSuchException $e) {
+            return redirect('/processes')->with('error', $e->getMessage());
+        }
         return redirect('/processes')->with('success', 'Process deleted.');
     }
 }

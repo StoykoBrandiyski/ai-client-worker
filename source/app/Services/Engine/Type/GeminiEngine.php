@@ -36,31 +36,33 @@ class GeminiEngine implements EngineProviderInterface
             $sortedChildren = $parentTask?->children()->orderBy('id', 'asc')->get() ?? collect();
 
             // Append parent task first
-            $userContent = [
-                'role'  => 'user',
-                'parts' => [['text' => $parentTask->request_content]]
-            ];
-            $modelContent = [
-                'role'  => 'model',
-                'parts' => [['text' => $parentTask->response_content]]
-            ];
-            $historyFormat[] = $userContent;
-            $historyFormat[] = $modelContent;
-            foreach ($sortedChildren as $parentChild) {
-                if ($parentChild->id == $task->id) {
-                    continue;
-                }
+            if($sortedChildren->isNotEmpty()) {
                 $userContent = [
                     'role'  => 'user',
-                    'parts' => [['text' => $parentChild->request_content]]
+                    'parts' => [['text' => $parentTask->request_content]]
                 ];
                 $modelContent = [
                     'role'  => 'model',
-                    'parts' => [['text' => $parentChild->response_content]]
+                    'parts' => [['text' => $parentTask->response_content]]
                 ];
-
                 $historyFormat[] = $userContent;
                 $historyFormat[] = $modelContent;
+                foreach ($sortedChildren as $parentChild) {
+                    if ($parentChild->id == $task->id) {
+                        continue;
+                    }
+                    $userContent = [
+                        'role'  => 'user',
+                        'parts' => [['text' => $parentChild->request_content]]
+                    ];
+                    $modelContent = [
+                        'role'  => 'model',
+                        'parts' => [['text' => $parentChild->response_content]]
+                    ];
+
+                    $historyFormat[] = $userContent;
+                    $historyFormat[] = $modelContent;
+                }
             }
         }
 
