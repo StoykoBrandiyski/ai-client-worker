@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use Exception;
+use InvalidArgumentException;
 use App\Jobs\TaskProcessJob;
 use App\Models\Process;
 use App\Models\ProcessCondition;
@@ -10,16 +12,30 @@ use App\Repositories\Contracts\ProcessRepositoryInterface;
 use App\Models\Task;
 use App\Exceptions\NoSuchException;
 use App\DTOs\ProcessDTO;
-use Exception;
+use Cron\CronExpression;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class ProcessService {
-    public function __construct(protected ProcessRepositoryInterface $repository) {}
 
-    public function saveProcess(ProcessDTO $dto, array $modelIdentifiers = []) {
+    /**
+     * ProcessService constructor.
+     *
+     * @param ProcessRepositoryInterface $repository
+     */
+    public function __construct(
+        private ProcessRepositoryInterface $repository
+    ) {}
+
+    /**
+     * @param ProcessDTO $dto
+     * @param array $modelIdentifiers
+     * @return Process
+     * @throws NoSuchException
+     */
+    public function saveProcess(ProcessDTO $dto, array $modelIdentifiers = []): Process {
         try {
-            return \DB::transaction(function () use ($dto, $modelIdentifiers) {
+            return DB::transaction(function () use ($dto, $modelIdentifiers) {
 
                 // 1. Handle Process Condition
                 $conditionId = $dto->conditionId;
@@ -31,6 +47,10 @@ class ProcessService {
 
                 if (!$conditionId) {
                     throw new Exception("A Process Condition is required.");
+                }
+
+                if (!CronExpression::isValidExpression($dto->schedule)) {
+                    throw new InvalidArgumentException("Invalid cron schedule. Please input currectly");
                 }
 
                 // 2. Map DTO to the array required by the Repository

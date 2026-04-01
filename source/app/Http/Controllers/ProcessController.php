@@ -10,6 +10,7 @@ use App\Models\ProcessCondition;
 use App\Http\Requests\StoreProcessRequest;
 use App\DTOs\ProcessDTO;
 use Illuminate\Http\Request;
+use InvalidArgumentException;
 
 class ProcessController extends Controller {
 
@@ -84,7 +85,7 @@ class ProcessController extends Controller {
 
         try {
             $this->service->saveProcess($dto, $val['models']);
-        } catch (NoSuchException $e) {
+        } catch (NoSuchException| InvalidArgumentException $e) {
             return redirect('/processes')->with('error', $e->getMessage());
         }
         return redirect('/processes')->with('success', 'Process saved successfully.');
