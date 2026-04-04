@@ -4,6 +4,7 @@ namespace App\Services\Engine;
 
 use App\Exceptions\NoSuchException;
 use App\Services\Engine\Type\GeminiEngine;
+use App\Services\Engine\Type\HuggingFaceEngine;
 use App\Services\Engine\Type\OllamaEngine;
 
 class EngineFactory
@@ -11,7 +12,7 @@ class EngineFactory
     protected static array $mapping = [
         'gemini'       => GeminiEngine::class,
         'ollama'       => OllamaEngine::class,
-        //'hugging-face' => HuggingFaceEngine::class,
+        'huggingface' => HuggingFaceEngine::class,
     ];
 
     protected static array $instances = [];
