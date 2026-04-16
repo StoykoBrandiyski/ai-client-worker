@@ -3,6 +3,7 @@
 use App\Http\Controllers\EngineController;
 use App\Http\Controllers\EngineModelController;
 use App\Http\Controllers\ProcessController;
+use App\Http\Controllers\ProcessLogController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
@@ -37,6 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/prompts/create', [PromptTemplateController::class, 'create']);
     Route::post('/prompts', [PromptTemplateController::class, 'store']);
 
+    Route::get('/process-logs', [ProcessLogController::class, 'index'])->name('process-logs.index');
     Route::get('/templates/{template}', function (\App\Models\PromptTemplate $template) {
         return response()->json([
             'content' => $template->content

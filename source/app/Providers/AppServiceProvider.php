@@ -5,12 +5,14 @@ namespace App\Providers;
 use App\Repositories\Contracts\EngineModelRepositoryInterface;
 use App\Repositories\Contracts\EngineRepositoryInterface;
 use App\Repositories\Contracts\GroupRepositoryInterface;
+use App\Repositories\Contracts\ProcessLogRepositoryInterface;
 use App\Repositories\Contracts\ProcessRepositoryInterface;
 use App\Repositories\Contracts\TaskRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\EngineModelRepository;
 use App\Repositories\EngineRepository;
 use App\Repositories\GroupRepository;
+use App\Repositories\ProcessLogRepository;
 use App\Repositories\ProcessRepository;
 use App\Repositories\TaskRepository;
 use App\Repositories\UserRepository;
@@ -29,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(EngineRepositoryInterface::class, EngineRepository::class);
         $this->app->bind(EngineModelRepositoryInterface::class, EngineModelRepository::class);
         $this->app->bind(ProcessRepositoryInterface::class, ProcessRepository::class);
+        $this->app->bind(ProcessLogRepositoryInterface::class, ProcessLogRepository::class);
     }
 
     /**
