@@ -30,7 +30,9 @@ class EngineModelService {
     {
         $engine = $this->engineRepository->getById((int) $data['engine_id']);
 
-        $data['identifier'] = trim(strtolower($engine->name)) . '-' . $data['identifier'];
+        if (!$id) {
+            $data['identifier'] = trim(strtolower($engine->name)) . '-' . $data['identifier'];
+        }
 
         try {
             return $this->repository->save($data, $id);

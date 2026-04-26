@@ -9,7 +9,7 @@
 <body class="bg-gray-100 flex flex-col min-h-screen">
 <header class="bg-white shadow-sm border-b p-4">
     <div class="container mx-auto flex justify-between items-center">
-        <a href="/groups" class="text-xl font-bold text-blue-600">AI Worker</a>
+        <a href="/dashboard" class="text-xl font-bold text-blue-600">AI Worker</a>
 
         <nav class="flex items-center space-x-6">
             <a href="/groups" class="text-gray-600 hover:text-blue-600 font-medium">Groups</a>

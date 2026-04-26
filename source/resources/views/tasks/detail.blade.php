@@ -50,14 +50,18 @@
                                 Copy
                             </button>
                             <button onclick="toggleResult('result-{{ $task->id }}', this)" class="text-xs text-blue-600 hover:text-blue-800 font-medium">
-                                Hide Result
+                                Show Result
                             </button>
                             <a href="/tasks/{{ $task->id }}/download" title="Download content" class="text-lg">💾</a>
                         </div>
                     </div>
-                    <div id="result-{{ $task->id }}">
-                        <pre class="bg-gray-900 text-green-400 p-4 rounded overflow-x-auto"><code>{{ $task->response_content }}</code></pre>
-                    </div>
+                    <div id="result-{{ $task->id }}" class="hidden">
+                        <pre class="bg-gray-900 text-green-400 p-4 rounded overflow-x-auto"><code
+                                contenteditable="true"
+                                class="editable-code outline-none focus:ring-2 focus:ring-green-500 rounded block min-h-[1.5rem]"
+                                data-task-id="{{ $task->id }}"
+                            >{{ $task->response_content }}</code></pre>
+                                        </div>
                 </div>
             @endif
 
@@ -90,10 +94,15 @@
                                         class="text-xs bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded transition">
                                     Copy
                                 </button>
-                                <button onclick="toggleResult('result-{{ $child->id }}', this)" class="text-xs text-blue-600 font-medium">Hide Result</button>
+                                <button onclick="toggleResult('result-{{ $child->id }}', this)" class="text-xs text-blue-600 font-medium">Show Result</button>
                             </div>
-                            <div id="result-{{ $child->id }}">
-                                <pre class="bg-gray-900 text-green-400 p-4 rounded overflow-x-auto"><code>{{ $child->response_content }}</code></pre>
+                            <div id="result-{{ $child->id }}" class="hidden">
+                                <pre class="bg-gray-900 text-green-400 p-4 rounded overflow-x-auto"><code
+                                        contenteditable="true"
+                                        class="editable-code outline-none focus:ring-2 focus:ring-green-500 rounded block min-h-[1.5rem]"
+                                        data-task-id="{{ $child->id }}"
+                                    >{{ $child->response_content }}</code></pre>
+
                             </div>
                         </div>
                     @endif
@@ -115,6 +124,62 @@
     </div>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const editableElements = document.querySelectorAll('.editable-code');
+
+            editableElements.forEach(element => {
+                // Store the original text so we don't send useless requests if nothing changed
+                let originalText = element.innerText;
+
+                element.addEventListener('blur', function() {
+                    const currentText = this.innerText;
+                    const taskId = this.dataset.taskId;
+
+                    // Only save if the text actually changed
+                    if (currentText !== originalText) {
+                        saveContent(taskId, currentText, this);
+                        originalText = currentText; // Update the reference
+                    }
+                });
+            });
+
+            function saveContent(taskId, content, element) {
+                // Fetch the CSRF token from the meta tag
+                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
+                    || document.querySelector('input[name="_token"]')?.value;
+
+                if (!csrfToken) {
+                    console.error('CSRF token missing!');
+                }
+
+                // Visual feedback (optional): dim text while saving
+                element.classList.add('opacity-50');
+
+                fetch(`/tasks/${taskId}/update-content`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        response_content: content
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        element.classList.remove('opacity-50');
+                        if (!data.success) {
+                            alert('Failed to save changes.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        element.classList.remove('opacity-50');
+                        alert('An error occurred while saving.');
+                    });
+            }
+        });
         function toggleResult(id, btn) {
             const target = document.getElementById(id);
             if (target.classList.contains('hidden')) {

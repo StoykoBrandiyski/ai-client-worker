@@ -85,6 +85,25 @@ class TaskController extends Controller {
         return redirect()->back()->with('success', 'Task Updated');
     }
 
+    public function updateContent(Request $request, Task $task)
+    {
+        // Validate the incoming data if necessary
+        $request->validate([
+            'response_content' => 'nullable|string'
+        ]);
+
+        // Update the record
+        $task->update([
+            'response_content' => $request->input('response_content')
+        ]);
+
+        // Return a JSON response for the JavaScript fetch call
+        return response()->json([
+            'success' => true,
+            'message' => 'Content updated successfully'
+        ]);
+    }
+
 
     /**
      * @param $id
