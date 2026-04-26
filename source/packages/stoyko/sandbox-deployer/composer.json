@@ -1,0 +1,16 @@
+{
+    "name": "stoyko/sandbox-deployer",
+    "description": "Sandbox code deployer about testing",
+    "autoload": {
+        "psr-4": {
+            "Stoyko\\SandboxDeployer\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "StoykoBrandiyski",
+            "email": "stoykobrandiiski@gmail.com"
+        }
+    ],
+    "require": {}
+}
