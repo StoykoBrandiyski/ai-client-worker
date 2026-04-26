@@ -62,6 +62,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
     Route::get('/tasks/{id}/download', [TaskController::class, 'download']);
     Route::get('/groups/{id}/tasks', [GroupController::class, 'getListByGroupId']);
+    Route::patch('/tasks/{task}/update-content', [TaskController::class, 'updateContent'])->name('tasks.update-content');
 
     // Engine
     Route::get('/engines', [EngineController::class, 'getAll']);
@@ -89,7 +90,5 @@ Route::middleware('auth')->group(function () {
     Route::delete('/processes', [ProcessController::class, 'destroy']);
 
     // Dashboard Home
-    Route::get('/dashboard', function () {
-        return view('welcome'); // Create a simple dashboard blade view
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
 });

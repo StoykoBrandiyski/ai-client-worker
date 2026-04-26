@@ -2,20 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreUserRequest;
-use App\Http\Requests\UpdateUserRequest;
-use App\Services\UserService;
-use App\DTOs\UserDTO;
-use App\Exceptions\NoSuchException;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Task;
+use App\Repositories\Contracts\ProcessLogRepositoryInterface;
 
 class DashboardController extends Controller
 {
+    /**
+     * DashboardController constructor.
+     * @param ProcessLogRepositoryInterface $processLogRepository
+     */
+    public function __construct(
+        private ProcessLogRepositoryInterface $processLogRepository
+    ) {
+    }
 
     // Show Register Form
     public function show()
     {
-        return view('welcome');
+        // 1. High-level Stats
+        $stats = [
+            'total_tasks'    => Task::count(),
+            'pending_tasks'  => Task::where('status', 'pending')->count(),
+            'success_rate'   => Task::count() > 0 ? round((Task::where('status', 'completed')->count() / Task::count()) * 100) : 0
+        ];
+
+        // 2. Latest Process Logs (Using your new Repository)
+        $latestLogs = $this->processLogRepository->getLatestLogs(10);
+
+        return view('welcome', compact('stats', 'latestLogs', 'tasks'));
     }
 }
