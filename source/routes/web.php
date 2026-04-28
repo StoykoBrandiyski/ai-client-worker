@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DeployerTaskController;
 use App\Http\Controllers\EngineController;
 use App\Http\Controllers\EngineModelController;
 use App\Http\Controllers\ProcessController;
@@ -63,6 +64,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/tasks/{id}/download', [TaskController::class, 'download']);
     Route::get('/groups/{id}/tasks', [GroupController::class, 'getListByGroupId']);
     Route::patch('/tasks/{task}/update-content', [TaskController::class, 'updateContent'])->name('tasks.update-content');
+
+    Route::post('/deploy', [DeployerTaskController::class, 'deploy'])->name('task.deploy');
 
     // Engine
     Route::get('/engines', [EngineController::class, 'getAll']);
