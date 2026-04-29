@@ -4,10 +4,10 @@
     <div class="max-w-6xl mx-auto py-8">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold">Process Management</h1>
-            <a href="/processes/create" class="bg-blue-600 text-white px-4 py-2 rounded">Create Process</a>
+            <a href="{{ url('/processes/create') }}" class="bg-blue-600 text-white px-4 py-2 rounded">Create Process</a>
         </div>
 
-        <form method="GET" action="/processes" class="mb-6 flex gap-2">
+        <form method="GET" action="{{ url('/processes') }}" class="mb-6 flex gap-2">
             <input type="text" name="name" value="{{ request('name') }}" placeholder="Search by name..." class="border rounded px-4 py-2">
             <select name="status" class="border rounded px-4 py-2 bg-white">
                 <option value="">All Statuses</option>
@@ -46,9 +46,9 @@
                             </div>
                         </td>
                         <td class="p-4 text-right flex justify-end gap-2">
-                            <a href="/processes/{{ $process->id }}" class="text-blue-600">View</a>
-                            <a href="/processes/edit/{{ $process->id }}" class="text-orange-500">Edit</a>
-                            <form action="/processes" method="POST" onsubmit="return confirm('Delete?');">
+                            <a href="{{ url('/processes/'.$process->id) }}" class="text-blue-600">View</a>
+                            <a href="{{ url('/processes/edit/'.$process->id) }}" class="text-orange-500">Edit</a>
+                            <form action="{{ url('/processes') }}" method="POST" onsubmit="return confirm('Delete?');">
                                 @csrf @method('DELETE')
                                 <input type="hidden" name="id" value="{{ $process->id }}">
                                 <button type="submit" class="text-red-600">Del</button>

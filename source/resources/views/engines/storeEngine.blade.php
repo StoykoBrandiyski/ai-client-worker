@@ -8,11 +8,11 @@
                 <h1 class="text-2xl font-bold text-gray-800">
                     {{ isset($engine) ? 'Edit Engine: ' . $engine->name : 'Create New Engine' }}
                 </h1>
-                <a href="/engines" class="text-sm text-blue-600 hover:underline">&larr; Back to List</a>
+                <a href="{{ url('/engines') }}" class="text-sm text-blue-600 hover:underline">&larr; Back to List</a>
             </div>
 
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <form action="/engines" method="POST" class="p-8 space-y-6">
+                <form action="{{ url('/engines') }}" method="POST" class="p-8 space-y-6">
                     @csrf
                     @if(isset($engine))
                         <input type="hidden" name="id" value="{{ $engine->id }}">

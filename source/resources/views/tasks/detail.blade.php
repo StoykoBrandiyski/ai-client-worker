@@ -10,7 +10,7 @@
             ];
             $badgeClass = $statusClasses[$taskStatus] ?? 'bg-gray-200 text-gray-700';
         @endphp
-        <a href="/groups/{{ $task->group_id }}" class="text-blue-500 mb-4 inline-block hover:underline">← Back to Group Tasks</a>
+        <a href="{{ url('/groups/'.$task->group_id) }}" class="text-blue-500 mb-4 inline-block hover:underline">← Back to Group Tasks</a>
         <div class="bg-white rounded-lg shadow-sm border p-6">
             <div class="flex justify-between items-center border-b pb-4">
                 <h1 class="text-2xl font-bold">{{ $task->name }}</h1>
@@ -64,7 +64,7 @@
                             <button onclick="toggleResult('result-{{ $task->id }}', this)" class="text-xs text-blue-600 hover:text-blue-800 font-medium">
                                 Show Result
                             </button>
-                            <a href="/tasks/{{ $task->id }}/download" title="Download content" class="text-lg">💾</a>
+                            <a href="{{ url('/tasks/'.$task->id.'/download') }}" title="Download content" class="text-lg">💾</a>
                         </div>
                     </div>
                     <div id="result-{{ $task->id }}" class="hidden">
@@ -121,7 +121,7 @@
                 </div>
             @endforeach
 
-            <form action="/tasks/child" method="POST" enctype="multipart/form-data" class="mt-12 p-6 bg-blue-50 rounded-xl border border-blue-200">
+            <form action="{{ url('/tasks/child') }}" method="POST" enctype="multipart/form-data" class="mt-12 p-6 bg-blue-50 rounded-xl border border-blue-200">
                 @csrf
                 <input type="hidden" name="reply_to_task_id" value="{{ $task->id }}">
                 <h3 class="font-bold mb-2 text-blue-800">Submit New Prompt</h3>
@@ -167,7 +167,7 @@
                 // Visual feedback (optional): dim text while saving
                 element.classList.add('opacity-50');
 
-                fetch(`/tasks/${taskId}/update-content`, {
+                fetch(`{{ url('') }}/tasks/${taskId}/update-content`, {
                     method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json',

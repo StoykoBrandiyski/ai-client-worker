@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="max-w-3xl mx-auto py-8">
-        <a href="/engines" class="text-blue-500 mb-4 inline-block">&larr; Back to List</a>
+        <a href="{{ url('/engines') }}" class="text-blue-500 mb-4 inline-block">&larr; Back to List</a>
         <div class="bg-white p-6 rounded shadow">
             <h1 class="text-2xl font-bold border-b pb-4 mb-4">Engine: {{ $engine->name }}</h1>
 

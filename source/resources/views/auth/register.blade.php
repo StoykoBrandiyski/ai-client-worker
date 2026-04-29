@@ -52,7 +52,7 @@
                         <button type="submit" class="bg-[#3b6db9] hover:bg-blue-700 text-white font-medium py-2 px-6 rounded transition duration-200">
                             Create Account
                         </button>
-                        <a href="/" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-6 rounded transition duration-200">
+                        <a href="{{ url('/') }}" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-6 rounded transition duration-200">
                             Cancel
                         </a>
                     </div>

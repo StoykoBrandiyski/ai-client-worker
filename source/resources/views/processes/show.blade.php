@@ -5,7 +5,7 @@
 
         <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
             <div>
-                <a href="/processes" class="text-sm text-blue-600 hover:underline flex items-center gap-1 mb-2">
+                <a href="{{ url('/processes') }}" class="text-sm text-blue-600 hover:underline flex items-center gap-1 mb-2">
                     &larr; Back to Process List
                 </a>
                 <h1 class="text-3xl font-bold text-gray-900">{{ $process->name }}</h1>
@@ -20,10 +20,10 @@
             </div>
 
             <div class="flex items-center gap-3">
-                <a href="/processes/edit/{{ $process->id }}" class="bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 px-5 py-2 rounded-lg font-semibold transition shadow-sm">
+                <a href="{{ url('/processes/edit/'.$process->id ) }}" class="bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 px-5 py-2 rounded-lg font-semibold transition shadow-sm">
                     Edit Configuration
                 </a>
-                <form action="/processes" method="POST" onsubmit="return confirm('Are you sure? This will delete the process and its model sequences.');">
+                <form action="{{ url('/processes') }}" method="POST" onsubmit="return confirm('Are you sure? This will delete the process and its model sequences.');">
                     @csrf
                     @method('DELETE')
                     <input type="hidden" name="id" value="{{ $process->id }}">

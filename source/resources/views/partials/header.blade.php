@@ -9,11 +9,11 @@
 <body class="bg-gray-100 flex flex-col min-h-screen">
 <header class="bg-white shadow-sm border-b p-4">
     <div class="container mx-auto flex justify-between items-center">
-        <a href="/dashboard" class="text-xl font-bold text-blue-600">AI Worker</a>
+        <a href="{{ url('/dashboard') }}" class="text-xl font-bold text-blue-600">AI Worker</a>
 
         <nav class="flex items-center space-x-6">
-            <a href="/groups" class="text-gray-600 hover:text-blue-600 font-medium">Groups</a>
-            <a href="/processes" class="text-gray-600 hover:text-blue-600 font-medium">Process</a>
+            <a href="{{ url('/groups') }}" class="text-gray-600 hover:text-blue-600 font-medium">Groups</a>
+            <a href="{{ url('/processes') }}" class="text-gray-600 hover:text-blue-600 font-medium">Process</a>
 
             <div class="relative group py-2"> <button class="flex items-center text-gray-600 group-hover:text-blue-600 font-medium focus:outline-none">
                     Task
@@ -23,8 +23,8 @@
                 </button>
                 <div class="absolute right-0 w-48 pt-2 hidden group-hover:block z-50">
                     <div class="bg-white border rounded-lg shadow-xl py-2">
-                        <a href="/tasks/create" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">New Task</a>
-                        <a href="/prompts/create" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Add Prompt Template</a>
+                        <a href="{{ url('/tasks/create') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">New Task</a>
+                        <a href="{{ url('/prompts/create') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Add Prompt Template</a>
                     </div>
                 </div>
             </div>
@@ -38,8 +38,8 @@
                 </button>
                 <div class="absolute right-0 w-48 pt-2 hidden group-hover:block z-50">
                     <div class="bg-white border rounded-lg shadow-xl py-2">
-                        <a href="/engines" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Engine</a>
-                        <a href="/engine/models" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Engine Models</a>
+                        <a href="{{ url('/engines') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Engine</a>
+                        <a href="{{ url('/engine/models') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Engine Models</a>
                     </div>
                 </div>
             </div>

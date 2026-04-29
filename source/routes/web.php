@@ -80,7 +80,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/engine/models/edit/{id}', [EngineModelController::class, 'edit']);
 
     Route::get('/engine/models', [EngineModelController::class, 'getList']);
-    Route::post('/engine/models', [EngineModelController::class, 'store']);
+    Route::post('/engine/models', [EngineModelController::class, 'store'])->name('engine.model.store');
     Route::get('/engine/models/{id}', [EngineModelController::class, 'getById']);
     Route::delete('/engine/models', [EngineModelController::class, 'destroy']);
 
@@ -93,5 +93,5 @@ Route::middleware('auth')->group(function () {
     Route::delete('/processes', [ProcessController::class, 'destroy']);
 
     // Dashboard Home
-    Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
+    Route::get('/', [DashboardController::class, 'show'])->name('dashboard');
 });

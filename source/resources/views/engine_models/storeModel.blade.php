@@ -11,7 +11,7 @@
             </div>
 
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <form action="/engine/models" method="POST" class="p-8 space-y-6">
+                <form action="{{ url('/engine/models') }}" method="POST" class="p-8 space-y-6">
                     @csrf
 
                     <div class="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
@@ -76,7 +76,7 @@
                     </div>
 
                     <div class="flex justify-end gap-3 pt-6 border-t">
-                        <a href="/engine/models" class="px-6 py-2 text-gray-500 hover:bg-gray-50 rounded">Cancel</a>
+                        <a href="{{ url('/engine/models') }}" class="px-6 py-2 text-gray-500 hover:bg-gray-50 rounded">Cancel</a>
                         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-10 rounded shadow transition">
                             {{ isset($model) ? 'Save Changes' : 'Create Model' }}
                         </button>

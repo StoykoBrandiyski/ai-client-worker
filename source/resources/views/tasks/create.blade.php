@@ -6,7 +6,7 @@
 
         <div class="flex items-center justify-between mb-8">
             <h1 class="text-3xl font-bold text-gray-800">Create New Task</h1>
-            <a href="/dashboard" class="text-blue-600 hover:text-blue-800 flex items-center gap-2">
+            <a href="{{ url('/dashboard') }}" class="text-blue-600 hover:text-blue-800 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
                 </svg>
@@ -15,7 +15,7 @@
         </div>
 
         <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-            <form action="/tasks" method="POST" enctype="multipart/form-data" class="p-8 space-y-6">
+            <form action="{{ url('/tasks') }}" method="POST" enctype="multipart/form-data" class="p-8 space-y-6">
                 @csrf
 
                 <div class="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
@@ -119,7 +119,7 @@
             contentTextarea.disabled = true;
 
             // Send GET request to your new route
-            fetch(`/templates/${templateId}`)
+            fetch(`{{ url('') }}/templates/${templateId}`)
                 .then(response => {
                     if (!response.ok) throw new Error('Network response was not ok');
                     return response.json();

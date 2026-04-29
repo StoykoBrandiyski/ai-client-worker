@@ -9,7 +9,7 @@
         </div>
         <div class="flex space-x-2">
             <input type="text" placeholder="Search tasks..." class="border rounded px-4 py-1">
-            <a href="/storeGroup" class="bg-blue-600 text-white px-4 py-1 rounded">New Task +</a>
+            <a href="{{ url('/storeGroup') }}" class="bg-blue-600 text-white px-4 py-1 rounded">New Task +</a>
         </div>
     </div>
 
@@ -32,8 +32,8 @@
                     <span class="text-gray-700">{{ $task->name }}</span>
                 </div>
                 <div class="flex items-center space-x-3">
-                    <a href="/tasks/{{ $task->id }}" class="bg-blue-600 text-white px-3 py-1 rounded text-sm">View Details</a>
-                    <form action="/tasks/{{ $task->id }}" method="POST" onsubmit="return confirm('Delete?')">
+                    <a href="{{ url('/tasks/'.$task->id) }}" class="bg-blue-600 text-white px-3 py-1 rounded text-sm">View Details</a>
+                    <form action="{{ url('/tasks/'.$task->id) }}" method="POST" onsubmit="return confirm('Delete?')">
                         @csrf @method('DELETE')
                         <button type="submit" class="text-gray-400 hover:text-red-500">🗑</button>
                     </form>
@@ -41,7 +41,7 @@
             </div>
             @endforeach
             <div class="p-3">
-                <a href="/groups/{{ $group->id }}" class="text-gray-500 text-sm font-bold bg-gray-100 px-4 py-1 rounded hover:bg-gray-200">+ More</a>
+                <a href="{{ url('/groups/'.$group->id) }}" class="text-gray-500 text-sm font-bold bg-gray-100 px-4 py-1 rounded hover:bg-gray-200">+ More</a>
             </div>
         </div>
     </div>

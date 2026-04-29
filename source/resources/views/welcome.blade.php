@@ -58,7 +58,7 @@
                                             @if($log->task_ids)
                                                 <div class="flex -space-x-1">
                                                     @foreach(array_slice($log->task_ids, 0, 3) as $id)
-                                                        <a href="/tasks/{{ $id }}" class="h-6 w-6 rounded-full bg-white border border-gray-200 flex items-center justify-center text-[10px] font-mono text-indigo-600 hover:bg-indigo-50">#{{ $id }}</a>
+                                                        <a href="{{ url('/tasks/'.$id) }}" class="h-6 w-6 rounded-full bg-white border border-gray-200 flex items-center justify-center text-[10px] font-mono text-indigo-600 hover:bg-indigo-50">#{{ $id }}</a>
                                                     @endforeach
                                                     @if(count($log->task_ids) > 3)
                                                         <span class="h-6 w-6 rounded-full bg-gray-100 flex items-center justify-center text-[10px] text-gray-500">+{{ count($log->task_ids) - 3 }}</span>
@@ -92,7 +92,7 @@
                                             <p class="text-[10px] text-gray-400">{{ $task->status }}</p>
                                         </div>
                                     </div>
-                                    <a href="/tasks/{{ $task->id }}" class="p-1 hover:bg-gray-100 rounded">
+                                    <a href="{{ url('/tasks/'.$task->id) }}" class="p-1 hover:bg-gray-100 rounded">
                                         <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                                     </a>
                                 </div>

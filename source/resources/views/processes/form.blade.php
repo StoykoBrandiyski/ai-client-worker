@@ -4,7 +4,7 @@
     <div class="max-w-4xl mx-auto py-10">
         <h1 class="text-2xl font-bold mb-6">{{ isset($process) ? 'Edit Process' : 'Create Process' }}</h1>
 
-        <form action="/processes" method="POST" class="bg-white p-8 rounded shadow space-y-6">
+        <form action="{{ url('/processes') }}" method="POST" class="bg-white p-8 rounded shadow space-y-6">
             @csrf
             @if(isset($process)) <input type="hidden" name="id" value="{{ $process->id }}"> @endif
 

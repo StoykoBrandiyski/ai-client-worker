@@ -4,7 +4,7 @@
 <div class="p-6 bg-gray-50 min-h-screen">
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold">Engine Models</h1>
-        <a href="/engine/models/create" class="bg-blue-600 text-white px-4 py-2 rounded">New Model</a>
+        <a href="{{ url('/engine/models/create') }}" class="bg-blue-600 text-white px-4 py-2 rounded">New Model</a>
     </div>
 
     <form method="GET" class="mb-4 flex gap-4">
@@ -29,7 +29,7 @@
                     <td class="p-4 font-mono text-sm">{{ $m->identifier }}</td>
                     <td class="p-4">{{ $m->engine->name }}</td>
                     <td class="p-4 text-right space-x-2">
-                        <a href="/engine/models/{{ $m->identifier }}" class="text-blue-600">View</a>
+                        <a href="{{ url('/engine/models/'. $m->identifier) }}" class="text-blue-600">View</a>
                         <form action="/engine/models" method="POST" class="inline">
                             @csrf @method('DELETE')
                             <input type="hidden" name="id" value="{{ $m->identifier }}">

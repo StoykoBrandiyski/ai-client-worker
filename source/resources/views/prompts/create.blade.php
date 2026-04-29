@@ -3,9 +3,9 @@
 <div class="max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-lg mt-10">
     <h2 class="text-2xl font-bold mb-6 text-gray-800">Create Prompt Template</h2>
 
-    <form action="/prompts" method="POST" class="space-y-6">
+    <form action="{{ url('/prompts') }}" method="POST" class="space-y-6">
         @csrf
-        
+
         <div>
             <label class="block text-sm font-medium text-gray-700">Template Name</label>
             <input type="text" name="name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">

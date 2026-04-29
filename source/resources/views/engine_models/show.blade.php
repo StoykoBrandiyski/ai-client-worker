@@ -11,10 +11,10 @@
             </div>
 
             <div class="flex gap-3">
-                <a href="/engine/models/edit/{{ $model->identifier }}" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-5 py-2 rounded-lg shadow transition">
+                <a href="{{ url('/engine/models/edit/'. $model->identifier)}}" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-5 py-2 rounded-lg shadow transition">
                     Edit
                 </a>
-                <form action="/engine/models" method="POST" onsubmit="return confirm('Are you sure you want to delete this model? This action cannot be undone.');">
+                <form action="{{ route('engine.model.store') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this model? This action cannot be undone.');">
                     @csrf
                     @method('DELETE')
                     <input type="hidden" name="id" value="{{ $model->identifier }}">

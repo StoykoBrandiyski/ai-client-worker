@@ -4,7 +4,7 @@
     <div class="max-w-3xl mx-auto py-8">
         <h1 class="text-2xl font-bold mb-6">Create / Edit Engine</h1>
 
-        <form action="/engines" method="POST" class="bg-white p-6 rounded shadow space-y-4">
+        <form action="{{ url('/engines') }}" method="POST" class="bg-white p-6 rounded shadow space-y-4">
             @csrf
 
             <div>

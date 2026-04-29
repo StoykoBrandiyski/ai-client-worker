@@ -5,7 +5,7 @@
     <div class="max-w-6xl mx-auto px-4">
 
         <div class="flex items-center justify-between mb-6">
-            <a href="/groups" class="text-blue-600 hover:underline flex items-center gap-1">
+            <a href="{{ url('/groups') }}" class="text-blue-600 hover:underline flex items-center gap-1">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
@@ -55,12 +55,12 @@
                             </td>
                             <td class="px-6 py-4 text-right">
                                 <div class="flex justify-end gap-2">
-                                    <a href="/tasks/{{ $task['id'] }}"
+                                    <a href="{{ url('/tasks'. $task['id']) }}"
                                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded text-sm font-medium transition">
                                         View
                                     </a>
 
-                                    <form action="/tasks/{{ $task['id'] }}" method="POST"
+                                    <form action="{{ url('/tasks'. $task['id']) }}" method="POST"
                                           onsubmit="return confirm('Move this task to the recycle bin?')">
                                         @csrf
                                         @method('DELETE')

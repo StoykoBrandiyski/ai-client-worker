@@ -32,7 +32,7 @@
                 <td class="px-6 py-4">
                     @if($log->task_id)
                         <div class="flex flex-wrap gap-1">
-                            <a href="/tasks/{{ $log->task_id }}" class="text-indigo-600 hover:text-indigo-900 text-xs font-mono bg-indigo-50 px-1 rounded border border-indigo-200">
+                            <a href="{{ url('/tasks/'. $log->task_id) }}" class="text-indigo-600 hover:text-indigo-900 text-xs font-mono bg-indigo-50 px-1 rounded border border-indigo-200">
                                 #{{ $log->task_id }}
                             </a>
                         </div>
