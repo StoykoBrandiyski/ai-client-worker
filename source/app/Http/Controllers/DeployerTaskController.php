@@ -32,9 +32,9 @@ class DeployerTaskController extends Controller
         try {
             $output = $this->deployProcess->run($taskContent);
         } catch (DeployException $e) {
-            return redirect()->back()->withErrors($e->getMessage());
+            return redirect()->back()->with('error', $e->getMessage());
         }
 
-        return redirect()->back()->with('success', $output);
+        return redirect()->back()->with('success', 'Deployer success');
     }
 }
