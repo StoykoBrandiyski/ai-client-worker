@@ -16,6 +16,10 @@ class SandboxDeployer
      */
     public function injectCode(string $relativeFilePath, string $codeContent): bool
     {
+        if (stripos(PHP_OS, 'LINUX') === false) {
+            throw new DeployException("Not running on Linux.");
+        }
+
         $sandboxRoot = env('AI_PHP_LARAVEL_SANDBOX_PATH');
         $fullPath = $sandboxRoot . '/' . $relativeFilePath;
 
@@ -36,12 +40,15 @@ class SandboxDeployer
     }
 
     /**
-     * @param string $testName
      * @return string
      * @throws DeployException
      */
-    public function runLaravelMigrationTest(string $testName): string
+    public function runLaravelMigrationTest(): string
     {
+        if (stripos(PHP_OS, 'LINUX') === false) {
+            throw new DeployException("Not running on Linux.");
+        }
+
         $sandboxRoot = env('AI_PHP_LARAVEL_SANDBOX_PATH');
 
         // Използваме директно "./vendor/bin/sail", но задаваме CWD (Current Working Directory)
@@ -73,6 +80,10 @@ class SandboxDeployer
      */
     public function runSandboxTest(string $testName): string
     {
+        if (stripos(PHP_OS, 'LINUX') === false) {
+            throw new DeployException("Not running on Linux.");
+        }
+
         $sandboxRoot = env('AI_PHP_LARAVEL_SANDBOX_PATH');
 
         // Използваме директно "./vendor/bin/sail", но задаваме CWD (Current Working Directory)
