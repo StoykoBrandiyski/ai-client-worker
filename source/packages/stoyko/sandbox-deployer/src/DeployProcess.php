@@ -3,6 +3,9 @@
 namespace Stoyko\SandboxDeployer;
 
 use Stoyko\SandboxDeployer\Exceptions\DeployException;
+use Stoyko\SandboxDeployer\Exceptions\AppErrorException;
+use Stoyko\SandboxDeployer\Exceptions\CodeErrorException;
+use Stoyko\SandboxDeployer\Exceptions\DatabaseErrorException;
 use Stoyko\SandboxDeployer\Services\CodeExtractor;
 use Stoyko\SandboxDeployer\Services\SandboxDeployer;
 
@@ -24,6 +27,9 @@ class DeployProcess
      * @param string $rawContent
      * @return string
      * @throws DeployException
+     * @throws AppErrorException
+     * @throws CodeErrorException
+     * @throws DatabaseErrorException
      */
     public function run(string $rawContent): string
     {
@@ -42,6 +48,17 @@ class DeployProcess
             throw new DeployException('Not extracted file content');
         }
 
+        // Check before running another step
+        $this->sandboxDeployer->ensureSailIsRunning();
+
+        if ($isMigration
+            && (
+                $this->sandboxDeployer->migrationFileExists($path)
+                || $this->sandboxDeployer->checkMigrationInDb($path)
+            )
+        ) {
+            throw new DeployException("The migration already exist");
+        }
         $this->sandboxDeployer->injectCode($path, $cleanCode);
 
         if ($isMigration) {

@@ -88,4 +88,18 @@ class TaskRepository implements TaskRepositoryInterface {
         Cache::forget('tasks_all');
         Cache::forget("tasks_group_{$groupId}");
     }
+
+    /**
+     * @param Task $task
+     * @return mixed|null
+     */
+    public function getLatestChild(Task $task)
+    {
+        return $task->children()->latest()->first();
+    }
+
+    public function saveChild(array $data, Task $parentTask, array $images = [])
+    {
+        return $parentTask->children()->create($data);
+    }
 }

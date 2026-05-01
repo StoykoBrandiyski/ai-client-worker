@@ -65,7 +65,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/groups/{id}/tasks', [GroupController::class, 'getListByGroupId']);
     Route::patch('/tasks/{task}/update-content', [TaskController::class, 'updateContent'])->name('tasks.update-content');
 
-    Route::post('/deploy', [DeployerTaskController::class, 'deploy'])->name('task.deploy');
+    Route::post('/deploy/{task}', [DeployerTaskController::class, 'deploy'])->name('task.deploy');
 
     // Engine
     Route::get('/engines', [EngineController::class, 'getAll']);

@@ -25,10 +25,9 @@
                 <div>Status: <span class="font-bold  {{ $badgeClass }}">{{ strtoupper($taskStatus) }}</span></div>
                 @if($task->response_content)
                     <div>
-                        <form action="{{ route('task.deploy') }}" method="POST"
+                        <form action="{{ route('task.deploy', $task->id) }}" method="POST"
                               onsubmit="return confirm('Do you want to delpoy?');">
                             @csrf
-                            <input type="hidden" name="task_response_content" value="{{ $task->response_content }}">
                             <button type="submit" class="px-3 py-1 rounded-full text-sm font-semibold border bg-red-600 text-white">
                                 Deploy
                             </button>
